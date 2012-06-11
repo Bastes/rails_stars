@@ -1,0 +1,2 @@
+module RailsStars
+end
