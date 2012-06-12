@@ -9,7 +9,7 @@ How to give your models shiny stars ?
 
 First you need to run the generator to create the migration that
 adds the Star model :
-    $ rails g stars
+    $ rails g rails_stars:star
 
 And migrate :
     $ rake db:migrate
