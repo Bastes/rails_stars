@@ -11,4 +11,9 @@ class ActsAsStarGiverTest < ActiveSupport::TestCase
       @star_giver.give_stars @star_receiver
     end
   end
+
+  test 'You can give rated stars' do
+    @star_giver.give_stars @star_receiver, rating: 3
+    assert_equal 3, @star_receiver.stars_received.first.rating
+  end
 end

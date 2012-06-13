@@ -11,8 +11,8 @@ module RailsStars
       end
     end
 
-    def receive_stars rating = nil
-      RailsStars::Star.create(:star_receiver => self, :rating => rating)
+    def receive_stars args = {}
+      RailsStars::Star.create :star_receiver => self, :rating => args[:rating], :star_giver => args[:giver]
     end
   end
 end

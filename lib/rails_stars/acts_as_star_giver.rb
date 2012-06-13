@@ -11,8 +11,8 @@ module RailsStars
       end
     end
 
-    def give_stars receiver
-      RailsStars::Star.create(:star_giver => self, :star_receiver => receiver)
+    def give_stars receiver, args = {}
+      receiver.receive_stars args.merge(giver: self)
     end
   end
 end

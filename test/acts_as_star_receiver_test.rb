@@ -12,12 +12,19 @@ class ActsAsStarReceiverTest < ActiveSupport::TestCase
   end
 
   test 'You can receive rated stars' do
-    @star_receiver.receive_stars 5
+    @star_receiver.receive_stars rating: 5
     assert_equal 5, @star_receiver.stars_received.first.rating
   end
 
   test 'If un-rated, stars get a 0 default rating' do
     @star_receiver.receive_stars
     assert_equal 0, @star_receiver.stars_received.first.rating
+  end
+
+  test 'You can receive stars from a giver' do
+    star_giver = StarGiver.create
+    assert_difference 'star_giver.stars_given.count' do
+      @star_receiver.receive_stars giver: star_giver
+    end
   end
 end
