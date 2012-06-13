@@ -14,6 +14,10 @@ module RailsStars
     def receive_stars args = {}
       RailsStars::Star.create :star_receiver => self, :rating => args[:rating], :star_giver => args[:giver]
     end
+
+    def star_average
+      stars_received.average :rating
+    end
   end
 end
 

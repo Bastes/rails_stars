@@ -27,4 +27,9 @@ class ActsAsStarReceiverTest < ActiveSupport::TestCase
       @star_receiver.receive_stars giver: star_giver
     end
   end
+
+  test 'A star receiver can know its star_average' do
+    [1,3,5,2,5,2].each { |r| @star_receiver.receive_stars rating: r }
+    assert_equal 3, @star_receiver.star_average
+  end
 end
