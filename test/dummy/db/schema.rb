@@ -14,17 +14,17 @@
 ActiveRecord::Schema.define(:version => 20120612154624) do
 
   create_table "rails_stars_stars", :force => true do |t|
-    t.integer "starrer_id"
-    t.string  "starrer_type"
-    t.integer "starred_id"
-    t.string  "starred_type"
+    t.integer "star_giver_id"
+    t.string  "star_giver_type"
+    t.integer "star_receiver_id"
+    t.string  "star_receiver_type"
     t.integer "rating"
   end
 
   add_index "rails_stars_stars", ["rating"], :name => "index_rails_stars_stars_on_rating"
-  add_index "rails_stars_stars", ["starred_id"], :name => "index_rails_stars_stars_on_starred_id"
-  add_index "rails_stars_stars", ["starred_type"], :name => "index_rails_stars_stars_on_starred_type"
-  add_index "rails_stars_stars", ["starrer_id"], :name => "index_rails_stars_stars_on_starrer_id"
-  add_index "rails_stars_stars", ["starrer_type"], :name => "index_rails_stars_stars_on_starrer_type"
+  add_index "rails_stars_stars", ["star_giver_id"], :name => "index_rails_stars_stars_on_star_giver_id"
+  add_index "rails_stars_stars", ["star_giver_type"], :name => "index_rails_stars_stars_on_star_giver_type"
+  add_index "rails_stars_stars", ["star_receiver_id"], :name => "index_rails_stars_stars_on_star_receiver_id"
+  add_index "rails_stars_stars", ["star_receiver_type"], :name => "index_rails_stars_stars_on_star_receiver_type"
 
 end

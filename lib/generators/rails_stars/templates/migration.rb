@@ -1,7 +1,7 @@
 class CreateRailsStarsStars < ActiveRecord::Migration
   def change
     create_table(:rails_stars_stars) do |t|
-<% %w{starrer starred}.each do |association| -%>
+<% %w{star_giver star_receiver}.each do |association| -%>
 <%   {'id' => :integer, 'type' => :string}.each do |suffix, type| -%>
       t.<%= type %> :<%= association %>_<%= suffix %>
 <%   end -%>
@@ -9,7 +9,7 @@ class CreateRailsStarsStars < ActiveRecord::Migration
       t.integer :rating
     end
 
-<% %w{starrer starred}.each do |association| -%>
+<% %w{star_giver star_receiver}.each do |association| -%>
 <%   {'id' => :integer, 'type' => :string}.each do |suffix, type| -%>
     add_index :rails_stars_stars, :<%= association %>_<%= suffix %>
 <%   end -%>

@@ -14,12 +14,12 @@ adds the Star model :
 And migrate :
     $ rake db:migrate
 
-Then you've got to tell the model that it has stars :
+Then you've got to tell the model that it receives stars :
     class YourRateableModel < ActiveRecord::Base
-      has_stars
+      receives_stars
     end
 
-And explain to your user it can give stars :
+You can also explain explain to your user it can give stars :
     class YourUserModel < ActiveRecord::Base
       gives_stars
     end
