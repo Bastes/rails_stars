@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120612173050) do
+ActiveRecord::Schema.define(:version => 20120613102236) do
 
   create_table "rails_stars_stars", :force => true do |t|
     t.integer "star_giver_id"
@@ -26,6 +26,11 @@ ActiveRecord::Schema.define(:version => 20120612173050) do
   add_index "rails_stars_stars", ["star_giver_type"], :name => "index_rails_stars_stars_on_star_giver_type"
   add_index "rails_stars_stars", ["star_receiver_id"], :name => "index_rails_stars_stars_on_star_receiver_id"
   add_index "rails_stars_stars", ["star_receiver_type"], :name => "index_rails_stars_stars_on_star_receiver_type"
+
+  create_table "star_givers", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "star_receivers", :force => true do |t|
     t.datetime "created_at", :null => false

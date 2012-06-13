@@ -5,6 +5,7 @@ module RailsStars
     attr_accessible :star_receiver, :star_giver, :rating
 
     belongs_to :star_receiver, :polymorphic => true
+    belongs_to :star_giver, :polymorphic => true
 
     before_save :set_zero_rating_for_nil
 
