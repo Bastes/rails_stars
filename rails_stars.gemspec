@@ -18,9 +18,11 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.2.3"
   s.add_dependency "jquery-rails", "~> 2.0.2"
+  s.add_dependency "coffee-rails", "~> 3.2.2"
   s.add_dependency "haml-rails", "~> 0.3.4"
   s.add_dependency "sass-rails", "~> 3.2.5"
   s.add_dependency "bourbon", "~> 1.4.0"
 
+  s.add_development_dependency "therubyracer", "~> 0.10.1"
   s.add_development_dependency "sqlite3"
 end
