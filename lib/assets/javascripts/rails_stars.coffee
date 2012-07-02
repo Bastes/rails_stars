@@ -15,4 +15,8 @@ $(document).
     $(@).removeClass('selecting')
   ).
   on('click', '[data-stars-for]', (event)->
+    $element = $(@)
+    $.post($element.data('stars-for'), rating: $element.attr('data-stars-selecting')).
+      success (r)=>
+        $element.attr('data-stars-rating', r['rating'])
   )

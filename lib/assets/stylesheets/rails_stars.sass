@@ -5,6 +5,7 @@
   width: 50px
   height: 10px
   cursor: pointer
+  &:before,
   &:after
     content: ''
     position: absolute
@@ -12,16 +13,23 @@
     left: 0px
     height: 100%
   &,
+  &:before,
   &:after
     background:
       image: image-url('rails_stars/stars.png')
       repeat: repeat-x
       position: 0px -30px
       color: transparent
+  &:before
+    background-position: 0px -20px
   &.selecting:after
     background-position: 0px 0px
   &.selecting:active:after
     background-position: 0px -10px
   @for $i from 0 through 5
+    &[data-stars-average="#{$i}"]:before
+      width: 20% * $i
+    &[data-stars-rating="#{$i}"]:before
+      width: 20% * $i !important
     &.selecting[data-stars-selecting="#{$i}"]:after
       width: 20% * $i
