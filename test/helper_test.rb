@@ -2,7 +2,7 @@ require 'test_helper'
 
 class HelperTest < ActionView::TestCase
   include RailsStars::Helper
-  
+
   setup do
     @star_receiver = StarReceiver.create
   end
@@ -13,10 +13,11 @@ class HelperTest < ActionView::TestCase
   end
 
   test 'stars_for displays the stars rating average of the reciver' do
-    [1,3,4,2].each { |r| @star_receiver.receive_stars rating: r }
+    assert_average [1,3,4,2, 5], 3
+  end
 
-    render :text => stars_for(@star_receiver)
-    assert_select '[data-stars-for][data-stars-average=?]', 2.5
+  test 'stars_for displays the stars rating average rounded to nearest unit' do
+    assert_average [4,5,5,5], 5
   end
 
   test 'stars_for displays the number of stars of the reciver' do
@@ -24,5 +25,12 @@ class HelperTest < ActionView::TestCase
 
     render :text => stars_for(@star_receiver)
     assert_select '[data-stars-for][data-stars-count=?]', 11
+  end
+
+  def assert_average serie, expected
+    serie.each { |r| @star_receiver.receive_stars rating: r }
+
+    render :text => stars_for(@star_receiver)
+    assert_select '[data-stars-for][data-stars-average=?]', expected
   end
 end
