@@ -1,10 +1,27 @@
 @import 'bourbon'
 [data-stars-for]
   @include inline-block
+  position: relative
   width: 50px
   height: 10px
-  background:
-    image: image-url('rails_stars/stars.png')
-    repeat: repeat-x
-    position: 0px -30px
-    color: transparent
+  cursor: pointer
+  &:after
+    content: ''
+    position: absolute
+    top: 0px
+    left: 0px
+    height: 100%
+  &,
+  &:after
+    background:
+      image: image-url('rails_stars/stars.png')
+      repeat: repeat-x
+      position: 0px -30px
+      color: transparent
+  &.selecting:after
+    background-position: 0px 0px
+  &.selecting:active:after
+    background-position: 0px -10px
+  @for $i from 0 through 5
+    &.selecting[data-stars-selecting="#{$i}"]:after
+      width: 20% * $i
