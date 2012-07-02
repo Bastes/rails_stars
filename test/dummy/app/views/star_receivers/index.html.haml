@@ -1,0 +1,5 @@
+%ul
+  - @star_receivers.each do |star_receiver|
+    %li
+      %strong= star_receiver.id
+      = stars_for star_receiver
