@@ -16,7 +16,23 @@ module RailsStars
     end
 
     def star_average
-      stars_received.average :rating
+      if stars_received.loaded?
+        if stars_received.empty?
+          0.0
+        else
+          stars_received.inject(0.0) { |r, i| r + i.rating } / stars_received.length
+        end
+      else
+        stars_received.average :rating
+      end
+    end
+
+    def star_count
+      if stars_received.loaded?
+        stars_received.length
+      else
+        stars_received.count
+      end
     end
   end
 end

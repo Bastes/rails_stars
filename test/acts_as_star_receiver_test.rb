@@ -32,4 +32,9 @@ class ActsAsStarReceiverTest < ActiveSupport::TestCase
     [1,3,5,2,5,2].each { |r| @star_receiver.receive_stars rating: r }
     assert_equal 3, @star_receiver.star_average
   end
+
+  test 'A star receiver can know its star_count' do
+    [3,4,5,4,1,5,1,3].each { |r| @star_receiver.receive_stars rating: r }
+    assert_equal 8, @star_receiver.star_count
+  end
 end
