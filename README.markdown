@@ -16,38 +16,50 @@ And migrate :
 
     $ rake db:migrate
 
-Then you've got to tell the model (and its controller) that it receives stars :
+Then you've got to tell the model that it receives stars :
 
+    # app/models/your_rateable_model.rb
     class YourRateableModel < ActiveRecord::Base
       receives_stars
     end
 
-    class YourRateableModelController < ApplicationController::Base
-      def stars
-        @rateable = YourRateableModel.find(params[:id])
+Then you need to explain your receiver model it receives stars :
 
-        @rateable.receive_stars rating: params[:rating]
-        # or, assuming you want to know who rated what:
-        # @rateable.receive_stars rating: params[:rating], giver: current_user
-      end
+    # app/controllers/your_rateable_models_controller.rb
+    class YourRateableModelsController < ApplicationController::Base
+      grants_stars :to => YourRateableModel
     end
+
+And configure a route to send the query :
 
     # config/routes.rb
     resource :your_rateable_model do
-      post :stars, :on => :member
-    end
-
-You can also explain explain to your user model it can give stars :
-
-    class YourUserModel < ActiveRecord::Base
-      gives_stars
+      post_stars
     end
 
 Then you can start displaying and giving stars in your views :
 
     <%= stars_for @your_rateable_instance %>
 
-(or, if you want your user to have his own vote reflected)
+How to keep track of who rates what ?
+-------------------------------------
+
+You can also explain explain to your user model it can give stars :
+
+    # app/models/your_user_model.rb
+    class YourUserModel < ActiveRecord::Base
+      gives_stars
+    end
+
+In that case you've got to tell your controller it's personal :
+
+    # app/controllers/your_rateable_models_controller.rb
+    class YourRateableModelsController < ApplicationController::Base
+      # supposing your_current_user returns current logged user
+      controls_stars giver: :your_current_user
+    end
+
+And you can display the user his latest vote instead of the average :
 
     <%= stars_for @your_rateable_instance, current_user %>
 
