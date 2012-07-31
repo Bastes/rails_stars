@@ -57,6 +57,8 @@ Dummy::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 
   resources :star_receivers do
-    post :stars, :on => :member
+    namespace :rails_stars do
+      resources :stars, only: :create
+    end
   end
 end
