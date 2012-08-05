@@ -56,7 +56,7 @@ Dummy::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  resources :star_receivers do
-    post :stars, :on => :member
-  end
+  resources :star_receivers
+
+  mount RailsStars::Engine => '/rails_stars'
 end
