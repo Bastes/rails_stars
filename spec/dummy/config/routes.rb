@@ -58,5 +58,5 @@ Dummy::Application.routes.draw do
 
   resources :star_receivers
 
-  mount RailsStars::Engine => '/rails_stars'
+  mount RailsStars::Engine => '/rails_stars', as: :rails_stars
 end

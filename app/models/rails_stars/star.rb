@@ -2,7 +2,7 @@ module RailsStars
   class Star < ActiveRecord::Base
     self.table_name = 'rails_stars_stars'
 
-    attr_accessible :star_receiver, :star_giver, :rating
+    attr_accessible :star_receiver, :star_receiver_id, :star_receiver_type, :star_giver, :rating
 
     belongs_to :star_receiver, :polymorphic => true
     belongs_to :star_giver, :polymorphic => true

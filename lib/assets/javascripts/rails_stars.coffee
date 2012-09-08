@@ -1,22 +1,24 @@
 moveTo = (element, event)->
   $element = $(element)
   starsNumber = 1 + parseInt((5.0 * (event.pageX - $element.offset().left)) / $element.width())
-  $element.attr('data-stars-selecting', starsNumber)
+  $element.
+    attr('data-stars-selecting', starsNumber).
+    find('input[name="star[rating]"]').val(starsNumber)
 
 $(document).
-  on('mouseenter', '[data-stars-for]', (event)->
+  on('mouseenter', '.new_star', (event)->
     moveTo(@, event)
     $(@).addClass('selecting')
   ).
-  on('mousemove', '[data-stars-for]', (event)->
+  on('mousemove', '.new_star', (event)->
     moveTo(@, event)
   ).
-  on('mouseleave', '[data-stars-for]', (event)->
+  on('mouseleave', '.new_star', (event)->
     $(@).removeClass('selecting')
   ).
-  on('click', '[data-stars-for]', (event)->
+  on('click', '.new_star', (event)->
     $element = $(@)
-    $.post($element.data('stars-for'), rating: $element.attr('data-stars-selecting')).
+    $.post($element.attr('action'), $element.serialize()).
       success (r)=>
         $element.attr('data-stars-rating', r['rating'])
   )
