@@ -6,22 +6,6 @@ rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
 
-begin
-  require 'rdoc/task'
-rescue LoadError
-  require 'rdoc/rdoc'
-  require 'rake/rdoctask'
-  RDoc::Task = Rake::RDocTask
-end
-
-RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'RailsStars'
-  rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.rdoc')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
 Bundler::GemHelper.install_tasks
 
 require 'rspec/core/rake_task'
@@ -29,3 +13,9 @@ require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new('spec')
 
 task :default => :spec
+
+require 'yard'
+
+YARD::Rake::YardocTask.new do |t|
+  t.files   = ['app/**/*.rb', 'lib/rails_stars.rb', 'lib/generators/rails_stars/star_generator.rb', 'lib/rails_stars/**/*.rb', '-', 'README.markdown']
+end

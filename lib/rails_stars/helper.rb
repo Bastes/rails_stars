@@ -1,5 +1,8 @@
 module RailsStars
   module Helper
+    # Displays a rating form for a star receiver
+    #
+    # @param [Object] receiver the receiver to attach stars to
     def stars_for receiver
       form_for([rails_stars, RailsStars::Star.new(star_receiver: receiver)], html: {
                :"data-stars-average" => (receiver.star_average || 0).round,

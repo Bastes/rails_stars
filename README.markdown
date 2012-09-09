@@ -16,6 +16,15 @@ And migrate :
 
     $ rake db:migrate
 
+Second, add RailsStars dependencies to your application.js :
+
+    //= require jquery
+    //= require rails_stars
+
+And to your application.css :
+
+    *= require rails_stars
+
 Then you've got to tell the model (and its controller) that it receives stars :
 
     class YourRateableModel < ActiveRecord::Base

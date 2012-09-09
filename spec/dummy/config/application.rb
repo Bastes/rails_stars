@@ -4,6 +4,8 @@ require 'rails/all'
 
 Bundler.require
 require "rails_stars"
+require 'haml-rails'
+require 'jquery-rails'
 
 module Dummy
   class Application < Rails::Application

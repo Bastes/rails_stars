@@ -2,17 +2,19 @@ module RailsStars
   module ActsAsStarGiver
     extend ActiveSupport::Concern
 
-    included do
-    end
-
     module ClassMethods
+      # Grants a model the ability to give star ratings to a receiver
       def gives_stars options = {}
         self.has_many :stars_given, :class_name => 'RailsStars::Star', :as => :star_giver
       end
     end
 
-    def give_stars receiver, args = {}
-      receiver.receive_stars args.merge(giver: self)
+    # Gives a star rating to a receiver
+    #
+    # @param [Object] receiver the star receiver
+    # @option options [Integer] rating the number of stars given
+    def give_stars receiver, options = {}
+      receiver.receive_stars options.merge(giver: self)
     end
   end
 end
