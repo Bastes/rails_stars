@@ -33,4 +33,15 @@ describe RailsStars::ActsAsStarReceiver do
     [3,4,5,4,1,5,1,3].each { |r| subject.receive_stars rating: r }
     subject.star_count.should == 8
   end
+
+  it 'can find stars by giver' do
+    giver = StarGiver.create
+    other_giver = StarGiver.create
+    other_receiver = StarReceiver.create
+    giver.give_stars subject, rating: 3
+    stars_expected = [giver.stars_given.first]
+    giver.give_stars other_receiver, rating: 2
+    other_giver.give_stars subject, rating: 4
+    subject.stars_received.where_giver(giver).should == stars_expected
+  end
 end
