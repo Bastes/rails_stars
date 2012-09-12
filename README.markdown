@@ -60,6 +60,20 @@ Then you can start displaying and giving stars in your views :
 
     <%= stars_for @your_rateable_instance, current_user %>
 
+If you want to attach your star ratings by giver, you can do this :
+
+    class ApplicationController
+
+      # ...
+
+      def current_star_giver
+        # assuming current_user returns current user for the session
+        current_user
+      end
+
+      # ...
+
+    end
 
 Boring Licence Stuff
 --------------------
