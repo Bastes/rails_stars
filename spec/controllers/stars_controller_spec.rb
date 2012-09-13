@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe RailsStars::StarsController do
   describe 'POST create' do
     let(:star_receiver) { StarReceiver.create }
