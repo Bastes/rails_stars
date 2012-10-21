@@ -12,20 +12,25 @@ describe RailsStars::Star do
   it { should allow_mass_assignment_of(:star_giver) }
   it { should allow_mass_assignment_of(:rating) }
 
-  it 'sets a zero rating by default if nil' do
-    star = RailsStars::Star.create(star_receiver: receiver, rating: nil)
-    star.rating.should == 0
+  context 'without any rating given' do
+    subject { RailsStars::Star.create(star_receiver: receiver, rating: nil) }
+
+    its(:rating) { should == 0 }
   end
 
-  it 'can search stars by giver' do
-    star = RailsStars::Star.create(star_giver: giver, star_receiver: receiver)
-    other_star = RailsStars::Star.create(star_giver: other_giver, star_receiver: receiver)
-    RailsStars::Star.where_giver(giver).should == [star]
+  describe '.where_giver' do
+    let!(:star) { RailsStars::Star.create(star_giver: giver, star_receiver: receiver) }
+    let!(:other_star) { RailsStars::Star.create(star_giver: other_giver, star_receiver: receiver) }
+    subject { RailsStars::Star.where_giver(giver) }
+
+    it { should == [star] }
   end
 
-  it 'can search stars by receiver' do
-    star = RailsStars::Star.create(star_giver: giver, star_receiver: receiver)
-    other_star = RailsStars::Star.create(star_giver: giver, star_receiver: other_receiver)
-    RailsStars::Star.where_receiver(receiver).should == [star]
+  describe '.where_receiver' do
+    let!(:star) { RailsStars::Star.create(star_giver: giver, star_receiver: receiver) }
+    let!(:other_star) { RailsStars::Star.create(star_giver: giver, star_receiver: other_receiver) }
+    subject { RailsStars::Star.where_receiver(receiver) }
+
+    it { should == [star] }
   end
 end
