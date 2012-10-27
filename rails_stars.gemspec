@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "therubyracer", ">= 0.10.2"
   s.add_development_dependency "sqlite3", ">= 1.3.6"
   s.add_development_dependency "rspec-rails", ">= 2.11.0"
+  s.add_development_dependency "guard-rspec", ">= 2.1.0"
   s.add_development_dependency "shoulda-matchers", ">= 1.3.0"
   s.add_development_dependency "mocha", ">= 0.12.4"
   s.add_development_dependency "generator_spec", ">= 0.8.5"
