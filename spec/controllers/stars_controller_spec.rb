@@ -35,47 +35,46 @@ describe RailsStars::StarsController do
 
     describe 'with a star_giver' do
       let(:star_giver) { StarGiver.create }
-      before do
-        controller.expects(:current_star_giver).returns star_giver
+      before { controller.expects(:current_star_giver).returns star_giver }
+
+      it { expect { post *parameters }.
+        to change(star_giver.stars_given, :count).by(1) }
+
+      context "with another star rating for the same giver and receiver" do
+        let!(:other_star) { star_giver.give_stars star_receiver, rating: 1 }
+
+        it { expect { post *parameters }.
+          not_to change(star_giver.stars_given, :count) }
+
+        describe 'the original star' do
+          subject { other_star.reload }
+          before { post *parameters }
+
+          its(:rating) { should == 4 }
+        end
       end
 
-      it 'creates a Star with the proper star_giver' do
-        expect {
-          post *parameters
-        }.to change(star_giver.stars_given, :count).by(1)
+      context 'with stars given to another receiver' do
+        let!(:other_receiver) { StarReceiver.create }
+        let!(:other_star)     { star_giver.give_stars other_receiver, rating: 2 }
+
+        describe 'the other star' do
+          subject { other_star.reload }
+          before { post *parameters }
+
+          its(:rating) { should == 2 }
+        end
       end
 
-      describe "when another star rating has been created for the same giver and receiver" do
-        before do
-          star_giver.give_stars star_receiver, rating: 1
-          @other_star = star_giver.stars_given.first
-        end
+      context 'with stars given by another giver' do
+        let!(:other_giver) { StarGiver.create }
+        let!(:other_star)  { other_giver.give_stars star_receiver, rating: 3 }
 
-        it 'does not create a duplicate' do
-          expect {
-            post *parameters
-          }.not_to change(star_giver.stars_given, :count)
-        end
+        describe 'the oother star' do
+          subject { other_star.reload }
+          before { post *parameters }
 
-        it 'does however change the rating of the original' do
-          post *parameters
-          @other_star.reload.rating.should == 4
-        end
-
-        it 'does not change any other rating for this giver' do
-          unrelated_receiver = StarReceiver.create
-          star_giver.give_stars unrelated_receiver, rating: 2
-          unrelated_star = unrelated_receiver.stars_received.first
-          post *parameters
-          unrelated_star.reload.rating.should == 2
-        end
-
-        it 'does not change any other rating for this receiver' do
-          unrelated_giver = StarGiver.create
-          unrelated_giver.give_stars star_receiver, rating: 3
-          unrelated_star = unrelated_giver.stars_given.first
-          post *parameters
-          unrelated_star.reload.rating.should == 3
+          its(:rating) { should == 3 }
         end
       end
     end

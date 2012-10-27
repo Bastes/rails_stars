@@ -11,7 +11,7 @@ describe RailsStars::Generators::StarGenerator do
   end
 
   it 'creates the migration' do
-    destination_root.should have_structure {
+    destination_root.should have_structure do
       directory "db" do
         directory "migrate" do
           migration "create_rails_stars_stars" do
@@ -19,6 +19,6 @@ describe RailsStars::Generators::StarGenerator do
           end
         end
       end
-    }
+    end
   end
 end

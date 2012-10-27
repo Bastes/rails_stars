@@ -1,28 +1,33 @@
 require 'spec_helper'
 
 describe RailsStars::ActsAsStarGiver do
-  subject { StarGiver.create }
+  let(:giver) { StarGiver.create }
+  let(:receiver) { StarReceiver.create }
+  subject { giver }
 
-  before { @star_receiver = StarReceiver.create }
+  context 'giving a star to a receiver' do
+    it { expect { subject.give_stars receiver }.
+      to change(subject.stars_given, :count).by(1) }
 
-  it 'allows to give stars' do
-    subject.give_stars @star_receiver
-    @star_receiver.stars_received.count.should == 1
+    describe 'the star created' do
+      subject { giver.give_stars receiver, rating: 3 }
+
+      it { should == giver.stars_given.first }
+      it { should == receiver.stars_received.first }
+      its(:rating)        { should == 3 }
+      its(:star_receiver) { should == receiver }
+      its(:star_giver)    { should == giver }
+    end
   end
 
-  it 'allows to give rated stars' do
-    subject.give_stars @star_receiver, rating: 3
-    @star_receiver.stars_received.first.rating.should == 3
-  end
+  describe '.stars_given.where_receiver' do
+    let(:other_giver)     { StarGiver.create }
+    let(:other_receiver)  { StarReceiver.create }
+    let!(:star_expected)  { giver.give_stars receiver, rating: 5 }
+    before { giver.give_stars other_receiver, rating: 2 }
+    before { other_giver.give_stars receiver, rating: 4 }
+    subject { giver.stars_given.where_receiver(receiver) }
 
-  it 'can find stars by giver' do
-    other_giver = StarGiver.create
-    receiver = StarReceiver.create
-    other_receiver = StarReceiver.create
-    subject.give_stars receiver, rating: 3
-    stars_expected = [subject.stars_given.first]
-    subject.give_stars other_receiver, rating: 2
-    other_giver.give_stars receiver, rating: 4
-    subject.stars_given.where_receiver(receiver).should == stars_expected
+    it { should == [star_expected] }
   end
 end
