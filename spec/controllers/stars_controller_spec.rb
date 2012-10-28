@@ -3,37 +3,39 @@ require 'spec_helper'
 describe RailsStars::StarsController do
   describe 'POST create' do
     let(:star_receiver) { StarReceiver.create }
-    let(:parameters) { [:create, star: { star_receiver_type: star_receiver.class.to_s, star_receiver_id: star_receiver.id, rating: 4 }, :use_route => :rails_stars] }
+    let(:parameters) do
+      [
+        :create,
+        star: {
+          star_receiver_type: star_receiver.class.to_s,
+          star_receiver_id: star_receiver.id,
+          rating: 4
+        },
+        use_route: :rails_stars
+      ]
+    end
 
     describe 'without a star_giver' do
-      it 'creates a Star given proper parameters' do
-        expect {
-          post *parameters
-        }.to change(star_receiver.stars_received, :count).by(1)
-      end
+      it { expect { post *parameters }.
+        to change(star_receiver.stars_received, :count).by(1) }
 
-      it 'should return a json representation of the rating results' do
-        post *parameters
-        response.header['Content-Type'].should include 'application/json'
-      end
+      describe 'the response' do
+        before { post *parameters }
+        subject { response }
 
-      it 'should present the given rating' do
-        post *parameters
-        JSON.parse(response.body)['rating'].to_i.should == 4
-      end
+        its(['Content-Type']) { should include('application/json') }
 
-      it 'should present the given average' do
-        post *parameters
-        JSON.parse(response.body)['average'].to_i.should == 4
-      end
+        describe 'JSON body' do
+          subject { JSON(response.body) }
 
-      it 'should present the given count' do
-        post *parameters
-        JSON.parse(response.body)['count'].to_i.should == 1
+          its(['rating'])  { should == 4 }
+          its(['average']) { should == 4 }
+          its(['count'])   { should == 1 }
+        end
       end
     end
 
-    describe 'with a star_giver' do
+    describe 'with a current_star_giver' do
       let(:star_giver) { StarGiver.create }
       before { controller.expects(:current_star_giver).returns star_giver }
 
@@ -76,6 +78,36 @@ describe RailsStars::StarsController do
 
           its(:rating) { should == 3 }
         end
+      end
+    end
+
+    describe 'with a nil current_star_giver' do
+      before { controller.expects(:current_star_giver).returns nil }
+
+      it { expect { post *parameters }.
+        to change(star_receiver.stars_received, :count).by(1) }
+
+      describe 'the star generated' do
+        subject { RailsStars::Star.last }
+        before { post *parameters }
+
+        its(:rating)        { should == 4 }
+        its(:star_receiver) { should == star_receiver }
+        its(:star_giver)    { should be_nil }
+      end
+    end
+
+    describe 'with a false current_star_giver' do
+      before { controller.expects(:current_star_giver).returns false }
+
+      it { expect { post *parameters }.
+        not_to change(star_receiver.stars_received, :count) }
+
+      describe 'the response' do
+        subject { response }
+        before { post *parameters }
+
+        its(:status) { should == 401 }
       end
     end
   end
