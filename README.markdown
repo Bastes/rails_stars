@@ -7,8 +7,17 @@ Rails Stars gives you ajax-y ratings shiny as stars.
 How to give your models shiny stars ?
 -------------------------------------
 
-First you need to run the generator to create the migration that
-adds the Star model :
+First add the gem to your Gemfile :
+
+    # Gemfile
+    gem 'rails_stars'
+
+Mount the engine :
+
+    # config/route.rb
+    mount RailsStars::Engine => '/stars', as: :rails_stars
+
+Run the generator to create the migration that creates the Star model :
 
     $ rails g rails_stars:star
 
@@ -25,55 +34,37 @@ And to your application.css :
 
     *= require rails_stars
 
-Then you've got to tell the model (and its controller) that it receives stars :
+Tell your model(s) that they receives stars :
 
     class YourRateableModel < ActiveRecord::Base
       receives_stars
     end
 
-    class YourRateableModelController < ApplicationController::Base
-      def stars
-        @rateable = YourRateableModel.find(params[:id])
+Display and allow to give stars in your views :
 
-        @rateable.receive_stars rating: params[:rating]
-        # or, assuming you want to know who rated what:
-        # @rateable.receive_stars rating: params[:rating], giver: current_user
-      end
-    end
+    <%= stars_for @your_rateable_instance %>
 
-    # config/routes.rb
-    resource :your_rateable_model do
-      post :stars, :on => :member
-    end
 
-You can also explain explain to your user model it can give stars :
+How to give stars on a per-user basis ?
+--------------------------------------
+
+First explain to your user model it can give stars :
 
     class YourUserModel < ActiveRecord::Base
       gives_stars
     end
 
-Then you can start displaying and giving stars in your views :
+Then make your ApplicationController aware of current star giver :
 
-    <%= stars_for @your_rateable_instance %>
-
-(or, if you want your user to have his own vote reflected)
-
-    <%= stars_for @your_rateable_instance, current_user %>
-
-If you want to attach your star ratings by giver, you can do this :
-
-    class ApplicationController
-
+    class ApplicationController < ActionController::Base
       # ...
-
       def current_star_giver
         # assuming current_user returns current user for the session
         current_user
       end
-
       # ...
-
     end
+
 
 Boring Licence Stuff
 --------------------

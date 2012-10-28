@@ -1,4 +1,5 @@
 module RailsStars
+  # Allows an ActiveRecord object to receive star ratings
   module ActsAsStarReceiver
     extend ActiveSupport::Concern
 
@@ -10,13 +11,17 @@ module RailsStars
     end
 
     # Receives a star rating
+    #
     # @option options [Integer] rating the number of stars received
     # @option options [Object] giver the object giving the rating
+    #
+    # @return [RailsStars::Star] the star object created
     def receive_stars options = {}
       RailsStars::Star.create :star_receiver => self, :rating => options[:rating], :star_giver => options[:giver]
     end
 
     # Current star rating average
+    #
     # @return [Numeric] star rating average
     def star_average
       if stars_received.loaded?
@@ -31,6 +36,7 @@ module RailsStars
     end
 
     # Current star count
+    #
     # @return [Integer] star count
     def star_count
       if stars_received.loaded?

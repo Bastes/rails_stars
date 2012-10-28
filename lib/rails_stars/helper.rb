@@ -1,4 +1,7 @@
 module RailsStars
+  # The RailsStars::Helper mixes in ActionView::Base to give the stars_for
+  # method that displays stars ratings and let visitors click on to give
+  # their own rating.
   module Helper
     # Displays a rating form for a star receiver
     #
