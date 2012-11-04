@@ -40,8 +40,11 @@ Tell your model(s) that they receives stars :
       receives_stars
     end
 
-Display and allow to give stars in your views :
+Display the stars widget to allow your visitors to vote for a rateable :
 
+    <%= stars_form_for @your_rateable_instance %>
+
+Display current rating average for a rateable :
     <%= stars_for @your_rateable_instance %>
 
 

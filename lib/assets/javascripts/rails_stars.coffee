@@ -6,17 +6,17 @@ moveTo = (element, event)->
     find('input[name="star[rating]"]').val(starsNumber)
 
 $(document).
-  on('mouseenter', '.new_star', (event)->
+  on('mouseenter', 'form.new_star', (event)->
     moveTo(@, event)
     $(@).addClass('selecting')
   ).
-  on('mousemove', '.new_star', (event)->
+  on('mousemove', 'form.new_star', (event)->
     moveTo(@, event)
   ).
-  on('mouseleave', '.new_star', (event)->
+  on('mouseleave', 'form.new_star', (event)->
     $(@).removeClass('selecting')
   ).
-  on('click', '.new_star', (event)->
+  on('click', 'form.new_star', (event)->
     $element = $(@)
     $.post($element.attr('action'), $element.serialize()).
       success (r)=>
