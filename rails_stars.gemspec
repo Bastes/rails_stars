@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails", ">= 2.1.2"
   s.add_dependency "coffee-rails", ">= 3.2.2"
   s.add_dependency "sass-rails", ">= 3.2.1"
-  s.add_dependency "bourbon", ">= 2.1.1"
 
   s.add_development_dependency "therubyracer", ">= 0.10.2"
   s.add_development_dependency "sqlite3", ">= 1.3.6"

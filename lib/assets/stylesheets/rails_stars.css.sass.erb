@@ -1,6 +1,5 @@
-@import 'bourbon'
 .new_star
-  @include inline-block
+  display: inline-block
   position: relative
   width: 50px
   height: 10px
@@ -16,20 +15,18 @@
   &:before,
   &:after
     background:
-      image: image-url('rails_stars/stars.png')
+      image: url(<%= image_path('rails_stars/stars.png') %>)
       repeat: repeat-x
       position: 0px -30px
       color: transparent
   &:before
     background-position: 0px -20px
   &.selecting:after
-    background-position: 0px 0px
+    background-position: 0px -20px
   &.selecting:active:after
-    background-position: 0px -10px
+    background-position: 0px 0px
   @for $i from 0 through 5
-    &[data-stars-average="#{$i}"]:before
-      width: 20% * $i
     &[data-stars-rating="#{$i}"]:before
-      width: 20% * $i !important
+      width: 20% * $i
     &.selecting[data-stars-selecting="#{$i}"]:after
       width: 20% * $i
