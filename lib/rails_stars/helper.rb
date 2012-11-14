@@ -7,13 +7,12 @@ module RailsStars
     #
     # @param [Object] receiver the receiver
     def stars_form_for receiver
-      form_for([rails_stars, RailsStars::Star.new(star_receiver: receiver)], html: {
+      form_for([rails_stars, RailsStars::Star.new(anchor: receiver.stars_anchor!)], html: {
                :"data-stars-average" => rounded_star_average(receiver),
                :"data-stars-count" => receiver.star_count,
                :id => nil}) do |f|
         [
-          f.hidden_field(:star_receiver_id),
-          f.hidden_field(:star_receiver_type),
+          f.hidden_field(:anchor_id),
           f.hidden_field(:rating)
         ].join.html_safe
       end

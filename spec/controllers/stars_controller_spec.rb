@@ -3,12 +3,12 @@ require 'spec_helper'
 describe RailsStars::StarsController do
   describe 'POST create' do
     let(:star_receiver) { StarReceiver.create }
+    let(:anchor) { star_receiver.stars_anchor! }
     let(:parameters) do
       [
         :create,
         star: {
-          star_receiver_type: star_receiver.class.to_s,
-          star_receiver_id: star_receiver.id,
+          anchor_id: anchor.id,
           rating: 4
         },
         use_route: :rails_stars

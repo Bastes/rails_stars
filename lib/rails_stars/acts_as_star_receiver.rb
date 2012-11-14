@@ -6,7 +6,8 @@ module RailsStars
     module ClassMethods
       # Grants a model the ability to recive star ratings
       def receives_stars options = {}
-        self.has_many :stars_received, :class_name => 'RailsStars::Star', :as => :star_receiver
+        self.has_one  :stars_anchor,   class_name: 'RailsStars::Anchor', as:      :star_receiver
+        self.has_many :stars_received, class_name: 'RailsStars::Star',   through: :stars_anchor
       end
     end
 
@@ -17,7 +18,7 @@ module RailsStars
     #
     # @return [RailsStars::Star] the star object created
     def receive_stars options = {}
-      RailsStars::Star.create :star_receiver => self, :rating => options[:rating], :star_giver => options[:giver]
+      RailsStars::Star.create :anchor => stars_anchor!, :rating => options[:rating], :star_giver => options[:giver]
     end
 
     # Current star rating average
@@ -43,6 +44,14 @@ module RailsStars
         stars_received.length
       else
         stars_received.count
+      end
+    end
+
+    def stars_anchor!
+      if stars_anchor
+        stars_anchor
+      else
+        stars_anchor = create_stars_anchor
       end
     end
   end

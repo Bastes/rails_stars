@@ -8,15 +8,13 @@ describe RailsStars::Helper, type: :helper do
 
     it { should have_selector("form[action=\"#{url_for([rails_stars, RailsStars::Star.new])}\"]") }
     it { should_not have_selector('form#new_star') }
+    it { should have_selector("input[name=\"star[anchor_id]\"]") }
 
     context 'with some ratings' do
       before { [5,4,5].each { |r| star_receiver.receive_stars rating: r } }
       it { should have_selector('form[data-stars-average="4.7"]') }
       it { should have_selector('form[data-stars-count="3"]') }
     end
-
-    it { should have_selector('input[name="star[star_receiver_type]"][value="StarReceiver"]') }
-    it { should have_selector("input[name=\"star[star_receiver_id]\"][value=\"#{star_receiver.id}\"]") }
   end
 
   describe '.stars_for' do
